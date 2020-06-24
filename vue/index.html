@@ -6,6 +6,62 @@
     <title>Document</title>
   </head>
   <body>
-    <h1>Hello</h1>
+    <div id="app">
+      <input type="text" v-model="message" />
+      <input type="text" v-bind:value="message" />
+      <h1>{{message}}</h1>
+      <div>
+        <input type="text" v-model="loginForm.username" />
+        <input type="text" v-model="loginForm.password" />
+        <button type="button" v-on:click="submitForm">submit</button>
+        <p>{{formInfo}}</p>
+        <p>{{filterList}}</p>
+        <p>
+          <button v-on:click="show = !show">Toggle</button>
+          <span v-if="show">Bob</span>
+          <span v-show="show">Bob</span>
+        </p>
+
+        <ul>
+          <li v-for="i in list">
+            {{i}}
+            <span-component v-bind:i="i"></span-component>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      Vue.component("span-component", {
+        props: ["i"],
+        template: "<span>{{i}}</span>",
+      });
+      let app = new Vue({
+        el: "#app",
+        data: {
+          user: null,
+          show: true,
+          message: "Hello Vue!",
+          loginForm: {
+            username: "",
+            password: "",
+          },
+          list: ["a - foo", "a - john", "b - doe"],
+        },
+        methods: {
+          submitForm() {
+            console.log(this.loginForm);
+          },
+        },
+        computed: {
+          formInfo: function () {
+            return this.loginForm.username + "plus" + this.loginForm.password;
+          },
+          filterList: function () {
+            return this.list.filter((x) => x.indexOf("a") === 0);
+          },
+        },
+      });
+    </script>
   </body>
 </html>
